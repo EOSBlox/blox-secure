@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>blox-secure test</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/wct-browser-legacy/browser.js"></script>
+
+    <script type="module" src="../blox-secure.js"></script>
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <blox-secure id="test"></blox-secure>
+      </template>
+    </test-fixture>
+
+    <script type="module">
+      suite('blox-secure', () => {
+
+        test('scrypt returns the corect hash', () => {
+          const element = fixture('BasicTestFixture');
+          element.setAttribute('key', '12345678')
+          let data = encodeURI(JSON.stringify({"test":"123"}))
+          element.setAttribute('data', data)
+          element.setAttribute('direction', 'encrypt')
+          assert.equal(JSON.parse(element.result).iv.length, 24);
+        });
+
+        test('scrypt returns the corect hash', () => {
+          const element = fixture('BasicTestFixture');
+          element.setAttribute('key', '12345678')
+          let data = encodeURI(JSON.stringify({"iv":"EIc2Dw/yA1NPli4uMKMddQ==","salt":"fzw9A2/s/RU=","ct":"RWRPVReVh2VvOrrXLDYS/gIwx3vhKw=="}))
+          element.setAttribute('data', data)
+          element.setAttribute('direction', 'decrypt')
+          assert.equal(element.result, JSON.stringify({"test":"123"}));
+        });
+
+      });
+    </script>
+
+  </body>
+</html>
