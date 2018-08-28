@@ -16,7 +16,6 @@ class BloxSecure extends PolymerElement {
           display: block;
         }
       </style>
-      {{result}} / {{error}}
     `;
   }
   static get properties() {
